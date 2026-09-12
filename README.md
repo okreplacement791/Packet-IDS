@@ -1,3 +1,5 @@
+[![Python package](https://github.com/okreplacement791/Packet-IDS/actions/workflows/python-package.yml/badge.svg)](https://github.com/okreplacement791/Packet-IDS/actions/workflows/python-package.yml)
+
 # packet-ids
 
 Passive network intrusion detection. Captures raw Ethernet frames, parses them by hand (no libpcap, no scapy), and flags traffic matching known-bad patterns.
