@@ -3,11 +3,14 @@ import datetime
 import sys
 
 from capture import capture
+from engine import load_rules, matches
 from parser import ETHERTYPE_IPV4, PROTO_TCP, parse_ethernet, parse_ipv4, parse_tcp
-from rules import RULE_NAME, null_scan_rule
+
+RULES_PATH = "rules.conf"
 
 
 def run(iface: str | None) -> None:
+    rules = load_rules(RULES_PATH)
     for frame in capture(iface):
         eth = parse_ethernet(frame)
         if eth.ethertype != ETHERTYPE_IPV4:
@@ -22,13 +25,14 @@ def run(iface: str | None) -> None:
             tcp = parse_tcp(ip.payload)
         except ValueError:
             continue
-        if null_scan_rule(tcp):
-            alert(ip.src_ip, tcp.src_port, ip.dst_ip, tcp.dst_port)
+        for rule in rules:
+            if matches(rule, ip, tcp):
+                alert(rule.msg, ip.src_ip, tcp.src_port, ip.dst_ip, tcp.dst_port)
 
 
-def alert(src_ip: str, src_port: int, dst_ip: str, dst_port: int) -> None:
+def alert(msg: str, src_ip: str, src_port: int, dst_ip: str, dst_port: int) -> None:
     ts = datetime.datetime.now().isoformat(timespec="seconds")
-    print(f"[{ts}] ALERT {RULE_NAME}: {src_ip}:{src_port} -> {dst_ip}:{dst_port}")
+    print(f"[{ts}] ALERT {msg}: {src_ip}:{src_port} -> {dst_ip}:{dst_port}")
 
 
 if __name__ == "__main__":
