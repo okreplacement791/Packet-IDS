@@ -1,4 +1,4 @@
-[![Python package](https://github.com/okreplacement791/Packet-IDS/actions/workflows/python-package.yml/badge.svg)](https://github.com/okreplacement791/Packet-IDS/actions/workflows/python-package.yml)
+![Python package](https://github.com/okreplacement791/Packet-IDS/actions/workflows/python-package.yml/badge.svg)
 
 # packet-ids
 
@@ -23,13 +23,11 @@ Passive network intrusion detection. Captures raw Ethernet frames, parses them b
 
 Needs root, since raw packet capture requires it:
 
-```
-sudo python3 main.py -i <interface>
-```
+    sudo python3 src/main.py -i <interface>
 
 Leave `-i` off to listen on all interfaces. Run the self-tests with:
 
-```
-python3 test_parser.py
-python3 test_dns.py
-```
+    python3 tests/test_parser.py
+    python3 tests/test_dns.py
+
+---
