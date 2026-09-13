@@ -12,6 +12,11 @@ Passive network intrusion detection. Captures raw Ethernet frames, parses them b
 - One rule: flags TCP segments with no flags set at all, the classic `nmap -sN` null-scan probe.
 - Alerts print to stdout with a timestamp and the source/destination of the offending packet.
 
+Example output:
+
+    [2026-09-12T14:32:01] ALERT TCP-NULL-SCAN: 10.0.0.5:51223 -> 10.0.0.12:22
+
+
 ## What it doesn't do yet
 
 - No IPv6, no IP fragmentation reassembly, no TCP options parsing.
