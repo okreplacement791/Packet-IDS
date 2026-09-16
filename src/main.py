@@ -4,7 +4,7 @@ import sys
 
 from capture import capture
 from engine import load_rules, matches
-from parser import ETHERTYPE_IPV4, PROTO_TCP, parse_ethernet, parse_ipv4, parse_tcp
+from parser import ETHERTYPE_IPV4, parse_ethernet, parse_ipv4, parse_tcp
 
 RULES_PATH = "rules.conf"
 
@@ -18,8 +18,6 @@ def run(iface: str | None) -> None:
         try:
             ip = parse_ipv4(eth.payload)
         except ValueError:
-            continue
-        if ip.protocol != PROTO_TCP:
             continue
         try:
             tcp = parse_tcp(ip.payload)
