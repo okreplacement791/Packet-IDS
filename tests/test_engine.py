@@ -41,6 +41,13 @@ def test_matches_specific_port_only():
     assert matches(rule, ip, miss) is False
 
 
+def test_udp_rule_does_not_match_tcp_packet():
+    rule = parse_rule('alert udp any any -> any any (msg:"UDP-ONLY";)')
+    ip = IPv4Packet("10.0.0.1", "10.0.0.2", PROTO_TCP, b"")
+    tcp = TCPSegment(12345, 80, 0, 0, 0, b"")
+    assert matches(rule, ip, tcp) is False
+
+
 def test_load_rules_skips_blank_lines_and_comments():
     with tempfile.NamedTemporaryFile("w", suffix=".conf", delete=False) as f:
         f.write("# comment\n\n" + NULL_SCAN_LINE + "\n")
@@ -58,5 +65,6 @@ if __name__ == "__main__":
     test_matches_null_scan_packet()
     test_does_not_match_syn_packet()
     test_matches_specific_port_only()
+    test_udp_rule_does_not_match_tcp_packet()
     test_load_rules_skips_blank_lines_and_comments()
     print("ok")
