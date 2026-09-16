@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 ETHERTYPE_IPV4 = 0x0800
 PROTO_TCP = 6
+PROTO_UDP = 17
 
 TCP_FLAG_FIN = 0x01
 TCP_FLAG_SYN = 0x02
