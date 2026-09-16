@@ -1,9 +1,9 @@
-from __future__ import annotations
-
 import re
 from dataclasses import dataclass
 
-from parser import IPv4Packet, PROTO_TCP, TCPSegment
+from parser import IPv4Packet, PROTO_TCP, PROTO_UDP, TCPSegment
+
+_PROTO_NUMS = {"tcp": PROTO_TCP, "udp": PROTO_UDP}
 
 _RULE_RE = re.compile(
     r"^(?P<action>\w+)\s+(?P<proto>\w+)\s+(?P<src_ip>\S+)\s+(?P<src_port>\S+)\s+->\s+"
@@ -63,7 +63,7 @@ def _matches_field(pattern: str, value: str) -> bool:
 
 
 def matches(rule: Rule, ip: IPv4Packet, tcp: TCPSegment) -> bool:
-    if rule.proto == "tcp" and ip.protocol != PROTO_TCP:
+    if _PROTO_NUMS.get(rule.proto) != ip.protocol:
         return False
     if not _matches_field(rule.src_ip, ip.src_ip):
         return False
